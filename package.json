@@ -1,0 +1,27 @@
+{
+  "name": "@mafintosh/website",
+  "version": "0.0.0",
+  "description": "@mafintosh's website",
+  "dependencies": {
+    "taco-nginx": "^1.12.0"
+  },
+  "scripts": {
+    "start": "taco-nginx --static . -n mafinto.sh --https-only"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mafintosh/website.git"
+  },
+  "keywords": [
+    "website",
+    "mafintosh",
+    "html",
+    "blog"
+  ],
+  "author": "Mathias Buus (@mafintosh)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mafintosh/website/issues"
+  },
+  "homepage": "https://mafinto.sh"
+}
