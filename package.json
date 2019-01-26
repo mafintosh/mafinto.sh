@@ -6,7 +6,7 @@
     "taco-nginx": "^1.12.0"
   },
   "scripts": {
-    "start": "taco-nginx --static . -n mafinto.sh --https-only"
+    "start": "taco-nginx --static . -n mafinto.sh -d mafinto.sh"
   },
   "repository": {
     "type": "git",
