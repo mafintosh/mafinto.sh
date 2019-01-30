@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{title}</title>
+  <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
+  <style>
+    html {
+      --black: #3B3737;
+      --red: #991818;
+      --white: #F7F7F7;
+      --gray: #C9D1D3;
+      --blue: #0086B3;
+    }
+
+    h1, h2, h3, h4 {
+      font-weight: normal;
+    }
+
+    body {
+      font-family: 'Merriweather', serif;
+      color: var(--black);
+      background-color: var(--white);
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      line-height: 28px;
+    }
+
+    main {
+      margin-top: 100px;
+      margin-bottom: 100px;
+    }
+
+    pre, code {
+      line-height: 20px;
+      font-family: Menlo, Monospace !important;
+    }
+
+    .decl {
+      color: #a71d5d;
+    }
+    .call {
+      color: #795da3;
+    }
+    .string {
+      color: #183691;
+    }
+    .const {
+      color: #0086b3;
+    }
+    .comment {
+      color: #969896;
+    }
+
+    pre {
+      padding: 20px;
+      margin: 25px 0;
+    }
+
+    h1 {
+      margin: 40px 0;
+      font-size: 40px;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    pre {
+      background-color: #F7F7F7;
+      font-size: 14px;
+    }
+
+    #post {
+      max-width: 800px;
+      padding: 0 20px;
+      margin: auto;
+    }
+
+    .date {
+      font-size: 14px;
+    }
+
+    .title {
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+
+    .title h1 {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <div id="content">
+    <div id="post">
+      <div class="title">
+        <h1>{title}</h1>
+        <div class="date">{permalink}</div>
+      </div>
+      <div>{source}</div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

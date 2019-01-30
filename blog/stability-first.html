@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stability first</title>
+  <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
+  <style>
+    html {
+      --black: #3B3737;
+      --red: #991818;
+      --white: #F7F7F7;
+      --gray: #C9D1D3;
+      --blue: #0086B3;
+    }
+
+    h1, h2, h3, h4 {
+      font-weight: normal;
+    }
+
+    body {
+      font-family: 'Merriweather', serif;
+      color: var(--black);
+      background-color: var(--white);
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      line-height: 28px;
+    }
+
+    main {
+      margin-top: 100px;
+      margin-bottom: 100px;
+    }
+
+    pre, code {
+      line-height: 20px;
+      font-family: Menlo, Monospace !important;
+    }
+
+    .decl {
+      color: #a71d5d;
+    }
+    .call {
+      color: #795da3;
+    }
+    .string {
+      color: #183691;
+    }
+    .const {
+      color: #0086b3;
+    }
+    .comment {
+      color: #969896;
+    }
+
+    pre {
+      padding: 20px;
+      margin: 25px 0;
+    }
+
+    h1 {
+      margin: 40px 0;
+      font-size: 40px;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    pre {
+      background-color: #F7F7F7;
+      font-size: 14px;
+    }
+
+    #post {
+      max-width: 800px;
+      padding: 0 20px;
+      margin: auto;
+    }
+
+    .date {
+      font-size: 14px;
+    }
+
+    .title {
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+
+    .title h1 {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <div id="content">
+    <div id="post">
+      <div class="title">
+        <h1>Stability first</h1>
+        <div class="date"><a href="stability-first.html">November 2016, Mathias Buus</a></div>
+      </div>
+      <div><p>I am an npm module author. I&#39;ve written close to 500 modules. Just this past week I&#39;ve published around 10 new ones.
+Modules I maintain have been downloaded more than 750 million times. Lots of my close friends are module authors as well.</p>
+<p>You could say I&#39;m invested in the Node.js ecosystem.</p>
+<p>I&#39;ve been using Node since version 0.4. Recently Node 7 was released. When reading the release notes two things caught my eye.</p>
+<ul>
+<li>It introduced a new core url module - a module that could easily have been published to npm instead.</li>
+<li>It deprecated the Buffer constructor when not using <code>new</code>. A change that deprecated &gt;1000 npm modules and their dependents.</li>
+</ul>
+<p>In addition there is now <a href="https://github.com/nodejs/node/pull/7152">a PR open to deprecate the Buffer constructor entirely</a>. A change that affects tens of thousands modules if not more.</p>
+<p>All these changes made me realize how much the priorities of Node has changed in the past years.</p>
+<h2 id="why-does-node-work">Why does Node work?</h2>
+<p>I love Node. It is a flexible platform that makes it easy to write a range of different programs. It is used for http servers, bittorrent clients, build tools, next generation p2p social networks, desktop apps and lots more!</p>
+<p>In my opinion, Node <em>works</em> because of two things:</p>
+<ol>
+<li>It has a small core with modules to interface with things like the file system, network, etc.</li>
+<li>It has npm which gives you access to more than 350.000 modules.</li>
+</ol>
+<p>The Node module system is built with backwards compatibility as a first class feature. It allows you to use many versions of the same module.
+Core modules, unfortunately, do not have this feature. When you require a core module you get the one that was shipped with the version of Node you happen to have installed.</p>
+<p>Effectively this makes Node core a &quot;peer dependency&quot;. If you are not familiar with the term, it basically means a dependency that is given to you but that you cannot version. You just have to deal with the one you&#39;ve been given.</p>
+<p>When writing modules, peer dependencies are especially frustrating. You cannot rely on new features being available as different users will have different versions of Node installed. Even more problematic, if you make a breaking change to a peer dependency you risk breaking old stable code.</p>
+<p>Luckily until recently Node core has been somewhat stable. Old code tends to <em>just work</em>.</p>
+<p>I recently installed and used <a href="https://github.com/maxogden/superlevel">https://github.com/maxogden/superlevel</a> - a module with latest commit more than 1.5 years ago, and it still worked perfectly. It worked because it does very few things and is more or less just done. If you look at it&#39;s dependency graph there is even a couple of outdated deps in there. They also <em>just work</em> because they are small and focused.</p>
+<p>When Node core development stalled in 0.10, before the fork to io.js happened we learned some important lessons.</p>
+<ol>
+<li>Node core governance was broken and desperately needed community intervention.</li>
+<li>Even with a stalled core project, Node innovation didn&#39;t stop. Module authors kept publishing new modules that moved the ecosystem forward.</li>
+</ol>
+<h2 id="going-forward">Going forward</h2>
+<p><strong>Innovation shouldn&#39;t come from Node core</strong>. It should come from modules. It should come from modules because they are easy to publish and they are extremely easy to update. We bump the major version when we want to make breaking changes and it doesn&#39;t break any old code as that&#39;ll just keep depending on the old version. Core doesn&#39;t have this luxury.</p>
+<p><strong>Core&#39;s job is to be boring: never break, upgrade v8, and be fast.</strong></p>
+<p>Going forward I hope we make a few changes to the way core works.</p>
+<ol>
+<li>When adding new features ask ourselves: Is this something that really needs to go in core? Once it goes in, it should never go out.</li>
+<li>When breaking things, acknowledge that Node is now so mature that it isn&#39;t feasible anymore for everyone to update their dependencies to the latest version of everything.</li>
+<li>We shouldn&#39;t expect module authors to watch core progress. Core is a noisy place. Outreach is key to get feedback on changes that affect the ecosystem before they are implemented.</li>
+</ol>
+</div>
+    </div>
+  </div>
+</main>
+</body>
+</html>
