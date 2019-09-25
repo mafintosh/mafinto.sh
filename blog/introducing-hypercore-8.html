@@ -120,7 +120,6 @@ hypercore.get(0, (err, data) =&gt; { ... }) // read an entry</code></pre>
 </ul>
 <h2 id="whats-new-in-v8">What&#39;s new in v8?</h2>
 <p>Hypercore has been around for years and in general has been quite stable. That said, there has always been room for improvement to the wire protocol, and this is that we&#39;ve focused on in v8.</p>
-<h3 id="authentication-and-encryption">Authentication and Encryption</h3>
 <p>Hypercore &lt;=7 uses a basic encryption scheme focused around the original use-cases: Hypercore keys are not derivable from their discovery keys, and can therefore be treated as shared capabilities. Hypercore will blindly replicate with anyone who can provably demonstrate that they have the key.</p>
 <p>Although a simple scheme, this had known drawbacks such as no forward secrecy and no way of knowing who you are replicating with securely.</p>
 <p>Since the we started the project, modular approaches to setting up cryptographic channels between peers have matured. In v8 we use one such approach called Noise. Noise is framework for exchanging a series of messages in a standardised fashion that allows you to create an encrypted channel with the exact cryptographic properties you are looking for.</p>

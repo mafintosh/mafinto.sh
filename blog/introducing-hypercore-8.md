@@ -29,7 +29,6 @@ The ecosystem around Hypercore consists of many projects, but the core ones wher
 
 Hypercore has been around for years and in general has been quite stable. That said, there has always been room for improvement to the wire protocol, and this is that we've focused on in v8.
 
-### Authentication and Encryption
 Hypercore <=7 uses a basic encryption scheme focused around the original use-cases: Hypercore keys are not derivable from their discovery keys, and can therefore be treated as shared capabilities. Hypercore will blindly replicate with anyone who can provably demonstrate that they have the key.
 
 Although a simple scheme, this had known drawbacks such as no forward secrecy and no way of knowing who you are replicating with securely.
@@ -37,6 +36,7 @@ Although a simple scheme, this had known drawbacks such as no forward secrecy an
 Since the we started the project, modular approaches to setting up cryptographic channels between peers have matured. In v8 we use one such approach called Noise. Noise is framework for exchanging a series of messages in a standardised fashion that allows you to create an encrypted channel with the exact cryptographic properties you are looking for.
 
 ### Noise Peer Authentication
+
 v8's updated wire protocol is bootstrapped using a [Noise protocol framework](http://www.noiseprotocol.org) XX handshake, which requires that both sides of the connection can be fully authenticated using static key pairs.
 
 This means that in v8, you can be cryptographically certain that you're talking to a known, trusted peer before continuing beyond the handshake. We're excited by the new types of applications that private sharing can enable.
