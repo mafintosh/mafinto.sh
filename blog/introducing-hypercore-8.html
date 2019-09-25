@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Introducing Hypercore 8</title>
+  <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
+  <style>
+    html {
+      --black: #3B3737;
+      --red: #991818;
+      --white: #F7F7F7;
+      --gray: #C9D1D3;
+      --blue: #0086B3;
+    }
+
+    h1, h2, h3, h4 {
+      font-weight: normal;
+    }
+
+    body {
+      font-family: 'Merriweather', serif;
+      color: var(--black);
+      background-color: var(--white);
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      line-height: 28px;
+    }
+
+    main {
+      margin-top: 100px;
+      margin-bottom: 100px;
+    }
+
+    pre, code {
+      line-height: 20px;
+      font-family: Menlo, Monospace !important;
+    }
+
+    .decl {
+      color: #a71d5d;
+    }
+    .call {
+      color: #795da3;
+    }
+    .string {
+      color: #183691;
+    }
+    .const {
+      color: #0086b3;
+    }
+    .comment {
+      color: #969896;
+    }
+
+    pre {
+      padding: 20px;
+      margin: 25px 0;
+    }
+
+    h1 {
+      margin: 40px 0;
+      font-size: 40px;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    pre {
+      background-color: #F7F7F7;
+      font-size: 14px;
+    }
+
+    #post {
+      max-width: 800px;
+      padding: 0 20px;
+      margin: auto;
+    }
+
+    .date {
+      font-size: 14px;
+    }
+
+    .title {
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+
+    .title h1 {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <div id="content">
+    <div id="post">
+      <div class="title">
+        <h1>Introducing Hypercore 8</h1>
+        <div class="date"><a href="introducing-hypercore-8.html">Septempber 2019, Mathias Buus</a></div>
+      </div>
+      <div><p>Last week we released the next big version of Hypercore, our distributed, scalable append-only log.</p>
+<p>We thought we&#39;d take the opportunity to describe some of the changes and exciting new features. Hopefully, it will become a tradition to write these kinds of posts for each major release!</p>
+<h2 id="what-is-hypercore">What is Hypercore?</h2>
+<p>If you are not familiar with the basics of Hypercore, first check it out at <a href="https://github.com/mafintosh/hypercore">https://github.com/mafintosh/hypercore</a></p>
+<p>Hypercore is an append-only log that is really good at replicating data. Its greatest feature is its flexibility: you can use it as a foundation for building other distributed data structures on top, without having to reimplement a ton of tricky peer-to-peer replication code.</p>
+<p>At first glace the API is quite straight forward. It&#39;s basically a distributed list that you can append data to and read data out of.</p>
+<pre><code class="language-js">hypercore.key // a public key that verifies the data structure
+hypercore.append(&#39;data&#39;) // add new data to the list
+hypercore.get(0, (err, data) =&gt; { ... }) // read an entry</code></pre>
+<p>Only the original creator of a Hypercore can append new data, making it a single-writer data structure. You can, however, build out powerful multi-writer data structures by using multiple Hypercores that reference each other&#39;s elements, if you need it. When consuming a big list of data you can choose to only download and verify data you are reading, making it good at sparse and random-access replication.</p>
+<p>The ecosystem around Hypercore consists of many projects, but the core ones where I spend the most time are:</p>
+<ul>
+<li>Hyperdrive, <a href="https://github.com/hyperdrive">https://github.com/hyperdrive</a> - A filesystem abstraction that runs on top of Hypercore</li>
+<li>Beaker, <a href="https://beakerbrowser.com">https://beakerbrowser.com</a> - A Hyperdrive browser</li>
+<li>Hypertrie, <a href="https://github.com/mafintosh/hypertrie">https://github.com/mafintosh/hypertrie</a> - A scalable key/value store on top of Hypercore</li>
+<li>Hyperswarm, <a href="https://github.com/hyperswarm">https://github.com/hyperswarm</a> - A P2P swarm that abstracts away complex P2P networking</li>
+</ul>
+<h2 id="whats-new-in-v8">What&#39;s new in v8?</h2>
+<p>Hypercore has been around for years and in general has been quite stable. That said, there has always been room for improvement to the wire protocol, and this is that we&#39;ve focused on in v8.</p>
+<h3 id="authentication-and-encryption">Authentication and Encryption</h3>
+<p>Hypercore &lt;=7 uses a basic encryption scheme focused around the original use-cases: Hypercore keys are not derivable from their discovery keys, and can therefore be treated as shared capabilities. Hypercore will blindly replicate with anyone who can provably demonstrate that they have the key.</p>
+<p>Although a simple scheme, this had known drawbacks such as no forward secrecy and no way of knowing who you are replicating with securely.</p>
+<p>Since the we started the project, modular approaches to setting up cryptographic channels between peers have matured. In v8 we use one such approach called Noise. Noise is framework for exchanging a series of messages in a standardised fashion that allows you to create an encrypted channel with the exact cryptographic properties you are looking for.</p>
+<h3 id="noise-peer-authentication">Noise Peer Authentication</h3>
+<p>v8&#39;s updated wire protocol is bootstrapped using a <a href="http://www.noiseprotocol.org">Noise protocol framework</a> XX handshake, which requires that both sides of the connection can be fully authenticated using static key pairs.</p>
+<p>This means that in v8, you can be cryptographically certain that you&#39;re talking to a known, trusted peer before continuing beyond the handshake. We&#39;re excited by the new types of applications that private sharing can enable.</p>
+<p>The feature is opt-in, meaning that to do anonymous browsing a unique key pair can still be generated for each session.</p>
+<p>Noise is also well-tested in the real world and with it our encrypted protocol stream is forward-secure.</p>
+<p>The update to Noise means that our replication API signature changes as well.</p>
+<p>In Hypercore &lt;=7 you would produce a replication stream like so:</p>
+<pre><code>const stream = v7feed.replicate()</code></pre><p>But in v8 you have to provide an <code>isInitiator</code> flag</p>
+<pre><code>const isInitiator = true | false
+const stream = v8feed.replicate(isInitator)</code></pre><p><code>isInitiator</code> indicates whether we are currently acting as a passive or active peer, i.e. if we are the one requesting the feed from someone who has it, or the one being asked.</p>
+<h3 id="updated-capability-system">Updated capability system</h3>
+<p>In Hypercore &lt;=7 we&#39;ve always had a capability system built in enforcing that the public key of the first shared Hypercore had to be prenegotiated.</p>
+<p>At the same time, the protocol has always allowed replicating multiple Hypercores over the same stream, using the same encryption parameters.  This means that if you have key X, and you inject key Y into the stream, the recipient can receive both feeds even if they lack key Y. Originally, the thought was that you would only replicate related Hypercores over a single stream (ones being used in the same data structure, for example).</p>
+<p>Recently, multiple use-cases have appeared where this turned into limitation, so v8 introduces an updated system that enforces that the keys for every Hypercore you share over a stream must be preshared.</p>
+<p>The system works by taking advantage of the Noise handshake. After a successful handshake each side of the connection will end up with a cryptographically unique session, <code>(rx, tx)</code> where <code>rx</code> is a receive key and <code>tx</code> is a transmit key.</p>
+<p>In short, when asking to replicate a Hypercore, even over an existing stream, a peer must now share the capability <code>hash(KNOWN_PREFIX + tx + hypercoreKey, rx)</code>. The only way to produce this capability is to know the Hypercore key. </p>
+<h3 id="new-options-message">New OPTIONS message</h3>
+<p>One final thing!</p>
+<p>We&#39;re also introducing a new <code>OPTIONS</code> message to the protocol, which replaces the old <code>HANDSHAKE</code> message.</p>
+<p>Whereas previously you had to declare connection options, like which extensions you support, when the stream was first initialized, <code>OPTIONS</code> makes these options dynamic. Now you can update them at any time.</p>
+<h2 id="more-to-come">More to come</h2>
+<p>We are excited about this release and hope you are too!</p>
+<p>It will form the foundation for all our upcoming releases in the Hyper* ecosystem.
+Our Hyperdrive v10 work builds on Hypercore v8 and will be next on our release road map.</p>
+<p>Fell free to reach out to me on Twitter at <a href="https://twitter.com/mafintosh">@mafintosh</a> if you have questions or general feedback.</p>
+</div>
+    </div>
+  </div>
+</main>
+</body>
+</html>
