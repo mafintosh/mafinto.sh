@@ -89,4 +89,4 @@ We are excited about this release and hope you are too!
 It will form the foundation for all our upcoming releases in the Hyper* ecosystem.
 Our Hyperdrive v10 work builds on Hypercore v8 and will be next on our release road map.
 
-Fell free to reach out to me on Twitter at [@mafintosh](https://twitter.com/mafintosh) if you have questions or general feedback.
+Feel free to reach out to me on Twitter at [@mafintosh](https://twitter.com/mafintosh) if you have questions or general feedback.
