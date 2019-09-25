@@ -13,6 +13,8 @@ marked.setOptions({
 })
 
 posts.forEach(function (post, i) {
+  if (post.published === false) return
+
   const source = marked(fs.readFileSync(path.join(__dirname, post.source), 'utf-8'))
   const link = post.source.replace('.md', '.html')
   const page = template
@@ -24,6 +26,7 @@ posts.forEach(function (post, i) {
 })
 
 const links = posts.map(function (post) {
+  if (post.published === false) return
   const link = post.source.replace('.md', '.html')
   return `<li><a href="${link}">${post.title}</a></li>`
 })
