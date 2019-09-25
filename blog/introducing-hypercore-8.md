@@ -4,7 +4,7 @@ We thought we'd take the opportunity to describe some of the changes and excitin
 
 ## What is Hypercore?
 
-If you are not familiar with the basics of Hypercore, first check it out at https://github.com/mafintosh/hypercore
+If you are not familiar with the basics of Hypercore, first [check it out here](https://github.com/mafintosh/hypercore).
 
 Hypercore is an append-only log that is really good at replicating data. Its greatest feature is its flexibility: you can use it as a foundation for building other distributed data structures on top, without having to reimplement a ton of tricky peer-to-peer replication code.
 
