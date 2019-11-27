@@ -113,7 +113,7 @@ hypercore.get(0, (err, data) =&gt; { ... }) // read an entry</code></pre>
 <p>Only the original creator of a Hypercore can append new data, making it a single-writer data structure. You can, however, build out powerful multi-writer data structures by using multiple Hypercores that reference each other&#39;s elements, if you need it. When consuming a big list of data you can choose to only download and verify data you are reading, making it good at sparse and random-access replication.</p>
 <p>The ecosystem around Hypercore consists of many projects, but the core ones where I spend the most time are:</p>
 <ul>
-<li><a href="https://github.com/hyperdrive">Hyperdrive</a> - A filesystem abstraction that runs on top of Hypercore</li>
+<li><a href="https://github.com/mafintosh/hyperdrive">Hyperdrive</a> - A filesystem abstraction that runs on top of Hypercore</li>
 <li><a href="https://beakerbrowser.com">Beaker</a> - A Hyperdrive browser</li>
 <li><a href="https://github.com/mafintosh/hypertrie">Hypertrie</a> - A scalable key/value store on top of Hypercore</li>
 <li><a href="https://github.com/hyperswarm">Hyperswarm</a> - A P2P swarm that abstracts away complex P2P networking</li>
