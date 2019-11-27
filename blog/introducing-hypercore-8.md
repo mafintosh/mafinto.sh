@@ -20,7 +20,7 @@ Only the original creator of a Hypercore can append new data, making it a single
 
 The ecosystem around Hypercore consists of many projects, but the core ones where I spend the most time are:
 
-* [Hyperdrive](https://github.com/hyperdrive) - A filesystem abstraction that runs on top of Hypercore
+* [Hyperdrive](https://github.com/mafintosh/hyperdrive) - A filesystem abstraction that runs on top of Hypercore
 * [Beaker](https://beakerbrowser.com) - A Hyperdrive browser
 * [Hypertrie](https://github.com/mafintosh/hypertrie) - A scalable key/value store on top of Hypercore
 * [Hyperswarm](https://github.com/hyperswarm) - A P2P swarm that abstracts away complex P2P networking
