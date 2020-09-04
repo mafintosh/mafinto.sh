@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "@mafintosh's website",
   "dependencies": {
-    "marked": "^0.6.0",
+    "marked": "^1.1.1",
     "taco-nginx": "^1.12.1"
   },
   "scripts": {
